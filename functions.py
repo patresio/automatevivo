@@ -1,17 +1,18 @@
+import csv
 import json
 import os
 from random import uniform
 from time import sleep
 
 import undetected_chromedriver as uc
-from colorama import Back, Fore
+from colorama import Fore
 from decouple import config
 from selenium.common.exceptions import *
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from utils.transform_data import mes_data, mes_txt
+from utils.transform_data import *
 
 
 def config_initial_local_folder():
@@ -93,3 +94,11 @@ def create_folder_download():
 
 def random_wait(inicio=5, fim=10):
     sleep(uniform(inicio, fim))
+
+
+def create_csv(header, data, filename):
+    with open(filename, "w", newline="") as csvfile:
+        faturas = csv.writer(csvfile)
+        faturas.writerow(header)
+        for x in data:
+            faturas.writerow(x)

@@ -25,7 +25,7 @@ def config_download_folder():
 
 
 def config_initial_data():
-    SITE_LINK = "https://mve.vivo.com.br/login/cpf"
+    SITE_LINK = "https://mve.vivo.com.br/"
     USER_DATA = {
         "email": config('EMAIL'),
         "password": config('PASSWORD')

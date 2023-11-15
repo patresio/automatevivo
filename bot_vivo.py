@@ -1,5 +1,3 @@
-import random
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
@@ -53,7 +51,22 @@ def bot_vivo():
           len(list_phones_numbers), 'faturas para fazer Downloads!!!')
 
     #### Clicando em cada telefone ####
-    
+    # Iniciando os clicks
+    for i, number_phone in enumerate(list_phones_numbers):
+        if i != 0:
+            wait.until(expected_conditions.presence_of_element_located(
+                (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
+            print('diferente de 0')
+            random_wait(5, 10)
+        print(i)
+        number_up = i + 1
+        phone_click = site_map['lista']['listPhones']['xpath'].replace(
+            "$$NUMBER_UP$$", str(number_up))
+        print(phone_click)
+        wait.until(expected_conditions.element_to_be_clickable(
+            (By.XPATH, phone_click))).click()
+        print('Passou')
+        random_wait(20, 30)
 
 
 bot_vivo()

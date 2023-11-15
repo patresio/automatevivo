@@ -24,8 +24,13 @@
         "phoneNumbers": {
             "xpath": "/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div/div/form/ul"
         },
-        "listPhoneNumbers":{
+        "listPhoneNumbers": {
             "xpath": "/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div/div/form/ul/li"
+        }
+    },
+    "lista": {
+        "listPhones": {
+            "xpath": "/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div/div/form/ul/li[$$NUMBER_UP$$]/a/span[1]"
         }
     }
 }

@@ -45,28 +45,31 @@ def bot_vivo():
 
     #### Listando os Telefones #####
     print('Aqui passou!!!')
-    list_phones_numbers = wait.until(expected_conditions.presence_of_all_elements_located(
+    element_numbers_phones = wait.until(expected_conditions.presence_of_all_elements_located(
         (By.XPATH, site_map['telefones']['listPhoneNumbers']['xpath'])))
     print(Fore.GREEN, '\U0001F916', 'O ROBO DIZ: UAUUUUUUUU Você tem',
-          len(list_phones_numbers), 'faturas para fazer Downloads!!!')
+          len(element_numbers_phones), 'faturas para fazer Downloads!!!')
 
     #### Clicando em cada telefone ####
-    # Iniciando os clicks
-    for i, number_phone in enumerate(list_phones_numbers):
-        if i != 0:
-            wait.until(expected_conditions.presence_of_element_located(
-                (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
-            print('diferente de 0')
-            random_wait(5, 10)
-        print(i)
-        number_up = i + 1
-        phone_click = site_map['lista']['listPhones']['xpath'].replace(
-            "$$NUMBER_UP$$", str(number_up))
-        print(phone_click)
+    list_number_phone = [
+        number_phone.text for number_phone in element_numbers_phones]
+
+    for phone in list_number_phone:
+        xpath = f"//span[@data-value='{phone}']"
+        print(Fore.WHITE, '-'*39)
+        print(Fore.GREEN, f'O Robo clica no telefone {phone}')
+        print(Fore.WHITE, '-'*39)
+        random_wait()
         wait.until(expected_conditions.element_to_be_clickable(
-            (By.XPATH, phone_click))).click()
-        print('Passou')
-        random_wait(20, 30)
+            (By.XPATH, xpath))).click()
+        # try:
+        #     mesVigencia = driver.find_element(By.XPATH, site_map['tabela']['tdmesVigencia']['xpath'])
+        # except:
+        #     print(Fore.RED, f'Não contém a fatura para download do telefone {phone}')
+        # Ultimo passo!
+        random_wait()
+        wait.until(expected_conditions.presence_of_element_located(
+            (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
 
 
 bot_vivo()

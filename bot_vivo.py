@@ -62,10 +62,12 @@ def bot_vivo():
         random_wait()
         wait.until(expected_conditions.element_to_be_clickable(
             (By.XPATH, xpath))).click()
-        # try:
-        #     mesVigencia = driver.find_element(By.XPATH, site_map['tabela']['tdmesVigencia']['xpath'])
-        # except:
-        #     print(Fore.RED, f'Não contém a fatura para download do telefone {phone}')
+        try:
+            mesVigencia = driver.find_element(
+                By.XPATH, site_map['tabela']['tdmesVigencia']['xpath'])
+        except:
+            print(
+                Fore.RED, f'Não contém a fatura para download do telefone {phone}')
         # Ultimo passo!
         random_wait()
         wait.until(expected_conditions.presence_of_element_located(

@@ -46,8 +46,6 @@ def bot_vivo():
         (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
 
     #### Listando os Telefones #####
-    phone_numbers = wait.until(expected_conditions.presence_of_element_located(
-        (By.XPATH, site_map['telefones']['phoneNumbers']['xpath'])))
     print('Aqui passou!!!')
     list_phones_numbers = wait.until(expected_conditions.presence_of_all_elements_located(
         (By.XPATH, site_map['telefones']['listPhoneNumbers']['xpath'])))

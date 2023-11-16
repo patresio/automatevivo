@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+import shutil
 from random import uniform
 from time import sleep
 
@@ -102,3 +103,22 @@ def create_csv(header, data, filename):
         faturas.writerow(header)
         for x in data:
             faturas.writerow(x)
+
+
+def rename_arquivo(local, download, rename, phone):
+    if os.path.isfile(download):
+        print(Fore.WHITE, '\U0001F916',
+              f'O ROBO Verificou e achou o arquivo {download}')
+        os.rename(download, rename)
+        shutil.move(rename, local)
+        print(Fore.GREEN,
+              '\U0001F916', f'O ROBO renomeou e moveu a fatura da linha {phone} com sucesso')
+    else:
+        random_wait(20, 30)
+        if os.path.isfile(download):
+            print(Fore.WHITE, '\U0001F916',
+                  f'O ROBO Verificou e achou o arquivo {download}')
+            os.rename(download, rename)
+            shutil.move(rename, local)
+            print(Fore.GREEN,
+                  '\U0001F916', f'O ROBO renomeou e moveu a fatura da linha {phone} com sucesso')

@@ -1,10 +1,8 @@
-import shutil
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 
-from functions import *
+from utils.functions import *
 
 
 def bot_vivo():
@@ -19,7 +17,8 @@ def bot_vivo():
     local_folder = config_initial_local_folder()
     site_map, site_link, user_data = config_initial_data()
     driver, wait = initial_drivers()
-    print('Entrando no site ... Fazendo Login')
+    print(Fore.CYAN, '\U0001F916',
+          'ROBO DIZ: Vou entrar no site e tentar fazer o login ....', '\U0001F412')
     driver.get(site_link)
     wait.until(
         expected_conditions.presence_of_element_located(
@@ -30,7 +29,8 @@ def bot_vivo():
         expected_conditions.presence_of_element_located(
             (By.XPATH, site_map['input']['password']['xpath']))
     ).send_keys(user_data['password'], Keys.ENTER)
-    print('Acesso concluido com sucesso ...')
+    print(Fore.WHITE, '\U0001F916',
+          'ROBO DIZ: Estamos com sorte o login foi efetuado com sucesso', '\U0001F310')
     random_wait(30, 50)
     wait.until(expected_conditions.presence_of_element_located(
         (By.XPATH, site_map['link']['linkVivoMovel']['xpath']))).click()
@@ -38,11 +38,11 @@ def bot_vivo():
     wait.until(expected_conditions.presence_of_element_located(
         (By.XPATH, site_map['link']['linkSolucoesCorporativa']['xpath']))).click()
     random_wait(25, 30)
-    print('Se chegou até aqui vamos ver se trocamos de aba')
+    print('\U0001F916', 'ROBO DIZ: Se chegou até aqui vamos ver se trocamos de aba meu pequeno gafanhoto', '\U000131A7')
     nova_aba = driver.window_handles[1]
     driver.switch_to.window(nova_aba)
-    print(Fore.WHITE, '\U0001F51C', driver.title,
-          'Conseguimos vir para a aba filho!!!!')
+    print(Fore.WHITE, '\U0001F916', 'ROBO DIZ: Calma Mussarello', '\U0001F9C0', '\n', '\U0001F51C', driver.title,
+          'Conseguimos ir para a aba filho!!!!')
     random_wait()
     wait.until(expected_conditions.presence_of_element_located(
         (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
@@ -52,7 +52,7 @@ def bot_vivo():
     element_numbers_phones = wait.until(expected_conditions.presence_of_all_elements_located(
         (By.XPATH, site_map['telefones']['listPhoneNumbers']['xpath'])))
     print(Fore.GREEN, '\U0001F916', 'O ROBO DIZ: UAUUUUUUUU Você tem',
-          len(element_numbers_phones), 'faturas para fazer Downloads!!!')
+          len(element_numbers_phones), '\U0000260E', 'faturas para fazer Downloads!!!')
 
     #### Clicando em cada telefone ####
     list_number_phone = [
@@ -60,9 +60,9 @@ def bot_vivo():
     csv_phone = []
     for phone in list_number_phone:
         xpath = f"//span[@data-value='{phone}']"
-        print(Fore.WHITE, '-'*39)
-        print(Fore.GREEN, f'O Robo clica no telefone {phone}')
-        print(Fore.WHITE, '-'*39)
+        print(Fore.WHITE, '-'*41)
+        print(Fore.GREEN, '\U0001F916', f'O ROBO clica no telefone {phone}')
+        print(Fore.WHITE, '-'*41)
         random_wait()
         wait.until(expected_conditions.element_to_be_clickable(
             (By.XPATH, xpath))).click()
@@ -74,20 +74,18 @@ def bot_vivo():
                 (By.XPATH, site_map['tabela']['statusPagamento']['xpath'])))
             valor_pagemento = wait.until(expected_conditions.presence_of_element_located(
                 (By.XPATH, site_map['tabela']['valorPagamento']['xpath'])))
-            txt_pronto = f'O sistema abriu com êxito a linha: {phone}. Sendo a fatura em vigor {mes_vigencia.text}. Com status {status_pagamento.text}'
-            print(txt_pronto)
+            txt_pronto = f'O ROBO  abriu com êxito a linha: {phone}. Sendo a fatura em vigor {mes_vigencia.text}. Com status {status_pagamento.text} |'
+            print(Fore.CYAN, '-'*107)
+            print(Fore.CYAN, '|', '\U0001F916', txt_pronto)
+            print(Fore.CYAN, '-'*107)
             data_phone = ([phone, status_pagamento, valor_pagemento])
             if status_pagamento.text == "Pendente":
-                print(site_map['img']['download']['xpath'])
                 wait.until(expected_conditions.element_to_be_clickable(
                     (By.XPATH, site_map['img']['download']['xpath']))).click()
-                print('passou')
                 random_wait(5, 10)
-                print(site_map['link']['downloadPDF']['xpath'])
-                driver.find_element(
-                    By.XPATH, site_map['link']['downloadPDF']['xpath']).click()
-                random_wait(30, 40)
-                print('Download OK')
+                wait.until(expected_conditions.element_to_be_clickable(
+                    (By.XPATH, site_map['link']['downloadPDF']['xpath']))).click()
+                random_wait(40, 60)
                 '''
                             Tratamento do arquivo da fatura baixado
                             e variaveis utilizadas
@@ -95,22 +93,15 @@ def bot_vivo():
                 fatura_download = f'{download_folder}/fatura_{mes_texto}{ano_atual}.pdf'
                 fatura_rename = f'{download_folder}/{phone}.pdf'
                 fatura_local_folder = f'{local_folder}/Faturas-{mes_txt}/{phone}.pdf'
-
-                os.rename(fatura_download, fatura_rename)
-                '''
-                            Movendo para a pasta do sistema
-                '''
-                shutil.move(fatura_rename, fatura_local_folder)
-                print(
-                    f'O sistema renomeou e moveu a fatura da linha {phone} com sucesso')
+                rename_arquivo(fatura_local_folder,
+                               fatura_download, fatura_rename, phone)
         except NoSuchElementException:
             print(
-                Fore.RED, f'Não contém a fatura para download do telefone {phone}')
+                Fore.RED, '\U0001F916', f'O ROBO não achou nada para download do telefone {phone}')
             data_phone = ([phone, 'None', 'None'])
         # Ultimo passo!
         csv_phone.append(data_phone)
         random_wait()
-        print('Clicar na combobox')
         wait.until(expected_conditions.presence_of_element_located(
             (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
     filename_csv = f'Faturas-{mes_txt}/Relatório-{mes_txt}.csv'

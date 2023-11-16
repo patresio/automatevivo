@@ -3,3 +3,4 @@ webdriver-manager==4.0.1
 python-decouple==3.8
 tqdm==4.66.1
 colorama==0.4.6
+PySimpleGUI==4.60.5

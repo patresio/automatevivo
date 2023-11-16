@@ -49,22 +49,22 @@ def initial_drivers():
     for argument in arguments:
         options.add_argument(argument)
     options.headless = False
+    options.set_preference(
+        "plugin.disable_full_page_plugin_for_types", "application/pdf")
+    options.set_preference("pdfjs.disabled", True)
+    options.set_preference("pdfjs.enabledCache.state", False)
     options.set_preference("browser.download.dir", config_download_folder())
     options.set_preference("browser.download.folderList", 2)
+    options.set_preference("browser.download.manager.showWhenStarting", False)
     options.set_preference(
         "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
-    options.set_preference("browser.download.manager.showWhenStarting", False)
-    # prefs = {"download.default_directory": config_download_folder(),
-    #          "safebrowsing.enabled": "false"}
-    # options.add_experimental_option("prefs", prefs)
-    driver = uc.Chrome(headless=False, options=options, service=FirefoxService(
-        GeckoDriverManager().install()), use_subprocess=True)
+    driver = webdriver.Firefox(options=options, service=FirefoxService(
+        GeckoDriverManager().install()))
     wait = WebDriverWait(
         driver,
-        30,
+        10,
         poll_frequency=1,
         ignored_exceptions=[
-            NoSuchElementException,
             ElementNotVisibleException,
             ElementNotSelectableException,
         ]

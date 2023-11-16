@@ -8,10 +8,14 @@ from time import sleep
 import undetected_chromedriver as uc
 from colorama import Fore
 from decouple import config
+from selenium import webdriver
 from selenium.common.exceptions import *
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 from utils.transform_data import *
 
@@ -38,17 +42,23 @@ def config_initial_data():
 
 
 def initial_drivers():
-    chrome_options = uc.ChromeOptions()
+    options = FirefoxOptions()
+
     arguments = ["--disable-infobars", "--lang=pt-BR", "--disable-logging",
                  "--disable-notifications", "--disable-default-apps", "--disable-extensions"]
     for argument in arguments:
-        chrome_options.add_argument(argument)
-    chrome_options.headless = False
-    prefs = {"download.default_directory": config_download_folder(),
-             "safebrowsing.enabled": "false"}
-    chrome_options.add_experimental_option("prefs", prefs)
-    driver = uc.Chrome(headless=False, options=chrome_options, service=ChromeService(
-        ChromeDriverManager().install()), use_subprocess=True)
+        options.add_argument(argument)
+    options.headless = False
+    options.set_preference("browser.download.dir", config_download_folder())
+    options.set_preference("browser.download.folderList", 2)
+    options.set_preference(
+        "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+    options.set_preference("browser.download.manager.showWhenStarting", False)
+    # prefs = {"download.default_directory": config_download_folder(),
+    #          "safebrowsing.enabled": "false"}
+    # options.add_experimental_option("prefs", prefs)
+    driver = uc.Chrome(headless=False, options=options, service=FirefoxService(
+        GeckoDriverManager().install()), use_subprocess=True)
     wait = WebDriverWait(
         driver,
         30,
@@ -93,7 +103,7 @@ def create_folder_download():
         return resposta
 
 
-def random_wait(inicio=5, fim=10):
+def random_wait(inicio=5, fim=7):
     sleep(uniform(inicio, fim))
 
 
@@ -114,6 +124,7 @@ def rename_arquivo(local, download, rename, phone):
         print(Fore.GREEN,
               '\U0001F916', f'O ROBO renomeou e moveu a fatura da linha {phone} com sucesso')
     else:
+        print('\U0001F916', f'O ROBO está aguardando o arquivo, vamos esperar')
         random_wait(20, 30)
         if os.path.isfile(download):
             print(Fore.WHITE, '\U0001F916',

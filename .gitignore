@@ -7,7 +7,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 Faturas*/
-
+Download*
 # C extensions
 *.so
 

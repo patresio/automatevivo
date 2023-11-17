@@ -1,6 +1,5 @@
-undetected-chromedriver
+selenium
 webdriver-manager
 python-decouple
-tqdm
 colorama
 PySimpleGUI

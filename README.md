@@ -21,7 +21,7 @@ Sistema desenvolvido para fazer o download das faturas no site da [VIVO](http://
 ## Como utilizar:
 
 ```bash
-git clone https://github.com/patresio/bot_automate_vivo.git automatevivo
+git clone https://github.com/patresio/automatevivo.git automatevivo
 
 cd automatevivo
 

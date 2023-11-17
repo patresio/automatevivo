@@ -1,4 +1,3 @@
-from curses import window
 from threading import Thread
 
 import PySimpleGUI as sg

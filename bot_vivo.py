@@ -139,6 +139,3 @@ def bot_vivo():
     header_csv = ['Número Telefone',
                   'Status do Pagamento', 'Valor do Pagamento']
     create_csv(header_csv, data_phone, filename_csv)
-
-
-bot_vivo()

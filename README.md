@@ -10,12 +10,14 @@ Sistema desenvolvido para fazer o download das faturas no site da [VIVO](http://
 
 🏢 A Prefeitura Municipal de Novo Horizonte viu a necessidade de desenvolver, e o Setor de TI o fez.
 
+![DEMO](src/img/aba%20pai.png)
+
 ## Tecnologias Usadas
 
 | Tecnologia | Versão             | Descrição       |
 | :--------- | :----------------- | :-------------- |
 | `python`   | `3.11.x or later`  | **Obrigatório** |
-| `selenium` | `4.15.x or later`           | **Obrigatório** |
+| `selenium` | `4.15.x or later`  | **Obrigatório** |
 | `firefox`  | `119.0.1 or later` | **Obrigatório** |
 
 ## Como utilizar:
@@ -64,8 +66,17 @@ Com todos os passos acima feito vamos rodar o comando!
 python app.py
 ```
 
+Abrirá a janela abaixo:
+
+![DEMO](src/img/aba%20pai.png)
+
+clicando no botão 'Automação Download Faturas VIVO' abrirá a tela abaixo é só clicar em 'Iniciar'
+
+![DEMO](src/img/aba%20filho.png)
+
 # Algumas instruções
-- Como escrito mais acima no passo a passo o navegador utilizado é o **FIREFOX**,  é obrigatório ter ele no computador.
+
+- Como escrito mais acima no passo a passo o navegador utilizado é o **FIREFOX**, é obrigatório ter ele no computador.
 - Poderá ocorrer alguns erros durante o processo. Caso o ROBO feche, basta tentar executá-lo novamente.
 - Ao termino na pasta das faturas terá um relatório, contendo algumas informações como numero da linha, status do pagamento e valor da fatura.
 - Qualquer dúvida abra uma issue.

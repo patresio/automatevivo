@@ -15,8 +15,8 @@ Sistema desenvolvido para fazer o download das faturas no site da [VIVO](http://
 | Tecnologia | Versão             | Descrição       |
 | :--------- | :----------------- | :-------------- |
 | `python`   | `3.11.x or later`  | **Obrigatório** |
-| `selenium` | `4.15.x`           | **Obrigatório** |
-| `firefox`  | `119.0.1 (64-bit)` | **Obrigatório** |
+| `selenium` | `4.15.x or later`           | **Obrigatório** |
+| `firefox`  | `119.0.1 or later` | **Obrigatório** |
 
 ## Como utilizar:
 
@@ -63,3 +63,11 @@ Com todos os passos acima feito vamos rodar o comando!
 ```bash
 python app.py
 ```
+
+# Algumas instruções
+- Como escrito mais acima no passo a passo o navegador utilizado é o **FIREFOX**,  é obrigatório ter ele no computador.
+- Poderá ocorrer alguns erros durante o processo. Caso o ROBO feche, basta tentar executá-lo novamente.
+- Ao termino na pasta das faturas terá um relatório, contendo algumas informações como numero da linha, status do pagamento e valor da fatura.
+- Qualquer dúvida abra uma issue.
+- OPEN Source, aberto a pull request.
+- Desde já agradeço.

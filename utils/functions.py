@@ -43,9 +43,8 @@ def config_initial_data():
 
 def initial_drivers():
     options = FirefoxOptions()
-
-    arguments = ["--disable-infobars", "--lang=pt-BR", "--disable-logging",
-                 "--disable-notifications", "--disable-default-apps", "--disable-extensions"]
+    arguments = ["disable-infobars", "--disable-notifications", "--no-sandbox",
+                 "--disable-application-cache", "--disable-gpu", "--disable-dev-shm-usage", "--disable-extensions"]
     for argument in arguments:
         options.add_argument(argument)
     options.headless = False

@@ -42,18 +42,9 @@ def bot_vivo():
     print('\U0001F916', 'ROBO DIZ: Se chegou até aqui vamos ver se trocamos de aba meu pequeno gafanhoto', '\U000131A7')
     nova_aba = driver.window_handles[1]
     driver.switch_to.window(nova_aba)
-    if 'Just a moment' in driver.title:
-        print('teste if')
-        while 'Just a moment' in driver.title:
-            driver.refresh()
-            print('teste', driver.title)
-            random_wait(10, 20)
-
     print(Fore.WHITE, '\U0001F916', 'ROBO DIZ: Calma Mussarello', '\U0001F9C0', '\n', '\U0001F51C', driver.title,
           'Conseguimos ir para a aba filho!!!!')
-
     random_wait()
-
     wait.until(expected_conditions.presence_of_element_located(
         (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
 
@@ -77,15 +68,14 @@ def bot_vivo():
         # Ajuste para erro!!!
         if os.path.isfile(fatura_local_folder):
             xpath = f"//span[@data-value='{phone}']"
+            random_wait(30, 40)
             print(Fore.WHITE, '-'*43)
             print(Fore.GREEN, '\U0001F916',
                   f'O ROBO clica no telefone {phone}')
             print(Fore.WHITE, '-'*43)
-            random_wait(15, 20)
             wait.until(expected_conditions.element_to_be_clickable(
                 (By.XPATH, xpath))).click()
-            random_wait(20, 30)
-
+            random_wait(30, 40)
             try:
                 mes_vigencia = driver.find_element(
                     By.XPATH, site_map['tabela']['mesVigencia']['xpath'])
@@ -95,18 +85,20 @@ def bot_vivo():
                     By.XPATH, site_map['tabela']['valorPagamento']['xpath'])
                 data_phone.append(
                     [phone, status_pagamento.text, valor_pagemento.text])
-            except:
-                pass
+            except NoSuchElementException:
+                random_wait(30, 50)
+                driver.refresh()
+                random_wait(30, 50)
         else:
             xpath = f"//span[@data-value='{phone}']"
+            random_wait(30, 40)
             print(Fore.WHITE, '-'*43)
             print(Fore.GREEN, '\U0001F916',
                   f'O ROBO clica no telefone {phone}')
             print(Fore.WHITE, '-'*43)
-            random_wait(15, 20)
             wait.until(expected_conditions.element_to_be_clickable(
                 (By.XPATH, xpath))).click()
-            random_wait(20, 30)
+            random_wait(30, 40)
             try:
                 mes_vigencia = driver.find_element(
                     By.XPATH, site_map['tabela']['mesVigencia']['xpath'])
@@ -140,14 +132,13 @@ def bot_vivo():
                     Fore.RED, '\U0001F916', f'O ROBO não achou nada para download do telefone {phone}')
                 data_phone.append([phone, None, None])
         # Ultimo passo do FOR
-        csv_phone.append(data_phone)
         random_wait()
         wait.until(expected_conditions.presence_of_element_located(
             (By.XPATH, site_map['button']['buttonComboBox']['xpath']))).click()
     filename_csv = f'Faturas-{mes_txt}/Relatório-{mes_txt}.csv'
     header_csv = ['Número Telefone',
                   'Status do Pagamento', 'Valor do Pagamento']
-    create_csv(header_csv, csv_phone, filename_csv)
+    create_csv(header_csv, data_phone, filename_csv)
 
 
 bot_vivo()

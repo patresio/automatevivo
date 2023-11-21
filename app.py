@@ -2,7 +2,7 @@ from threading import Thread
 
 import PySimpleGUI as sg
 
-from bot_vivo import bot_vivo
+from bot.bot_vivo import bot_vivo
 
 
 def principal_window():

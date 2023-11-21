@@ -21,13 +21,11 @@ from utils.transform_data import *
 
 
 def config_initial_local_folder():
-    LOCAL_FOLDER = os.getcwd()
-    return LOCAL_FOLDER
+    return os.getcwd()
 
 
 def config_download_folder():
-    DOWNLOAD_FOLDER = os.path.join(config_initial_local_folder(), 'Downloads')
-    return DOWNLOAD_FOLDER
+    return os.path.join(config_initial_local_folder(), 'Downloads')
 
 
 def config_initial_data():
@@ -41,34 +39,56 @@ def config_initial_data():
     return SITE_MAP, SITE_LINK, USER_DATA
 
 
-def initial_drivers():
-    options = FirefoxOptions()
+def initial_drivers(browser):
+    if browser == 'firefox':
+        options = FirefoxOptions()
+        browser_arguments(options)
+        options.set_preference(
+            "plugin.disable_full_page_plugin_for_types", "application/pdf")
+        options.set_preference("pdfjs.disabled", True)
+        options.set_preference("pdfjs.enabledCache.state", False)
+        options.set_preference("browser.download.dir",
+                               config_download_folder())
+        options.set_preference("browser.download.folderList", 2)
+        options.set_preference(
+            "browser.download.manager.showWhenStarting", False)
+        options.set_preference(
+            "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+        driver = webdriver.Firefox(options=options, service=FirefoxService(
+            GeckoDriverManager().install()))
+        wait = WebDriverWait(
+            driver,
+            10,
+            poll_frequency=1,
+            ignored_exceptions=[
+                ElementNotVisibleException,
+                ElementNotSelectableException,
+            ]
+        )
+        return driver, wait
+    elif browser == 'chrome':
+        options = uc.ChromeOptions()
+        browser_arguments(options)
+        driver = webdriver.Chrome(options=options, service=ChromeService(
+            ChromeDriverManager().install()))
+        wait = WebDriverWait(
+            driver,
+            10,
+            poll_frequency=1,
+            ignored_exceptions=[
+                ElementNotVisibleException,
+                ElementNotSelectableException,
+            ]
+        )
+        return driver, wait
+
+
+def browser_arguments(options):
     arguments = ["disable-infobars", "--disable-notifications", "--no-sandbox",
                  "--disable-application-cache", "--disable-gpu", "--disable-dev-shm-usage", "--disable-extensions"]
     for argument in arguments:
         options.add_argument(argument)
     options.headless = False
-    options.set_preference(
-        "plugin.disable_full_page_plugin_for_types", "application/pdf")
-    options.set_preference("pdfjs.disabled", True)
-    options.set_preference("pdfjs.enabledCache.state", False)
-    options.set_preference("browser.download.dir", config_download_folder())
-    options.set_preference("browser.download.folderList", 2)
-    options.set_preference("browser.download.manager.showWhenStarting", False)
-    options.set_preference(
-        "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
-    driver = webdriver.Firefox(options=options, service=FirefoxService(
-        GeckoDriverManager().install()))
-    wait = WebDriverWait(
-        driver,
-        10,
-        poll_frequency=1,
-        ignored_exceptions=[
-            ElementNotVisibleException,
-            ElementNotSelectableException,
-        ]
-    )
-    return driver, wait
 
 
 def create_folder_faturas():
@@ -76,30 +96,48 @@ def create_folder_faturas():
     if os.path.isdir(name_folder_fatura):
         print(Fore.RED, '\U0001F916', 'O ROBO DIZ:',
               f'Pasta do mês: {mes_data} já existe!', '\U0001F4C5', '\U0001F4C1')
-        resposta = ('\U0001F916', 'O ROBO DIZ:',
-                    f'Pasta do mês: {mes_data} já existe!', '\U0001F4C5', '\U0001F4C1')
+        return (
+            '\U0001F916',
+            'O ROBO DIZ:',
+            f'Pasta do mês: {mes_data} já existe!',
+            '\U0001F4C5',
+            '\U0001F4C1',
+        )
     else:
         os.mkdir(name_folder_fatura)
         print(Fore.GREEN, '\U0001F916', 'O ROBO DIZ:',
               f'Pasta para as faturas do mês: {mes_data} foi criada com sucesso!', '\U0001F4C5', '\U0001F91D', '\U0001F4BE')
-        resposta = ('\U0001F916', 'O ROBO DIZ:',
-                    f'Pasta para as faturas do mês: {mes_data} foi criada com sucesso!', '\U0001F4C5', '\U0001F91D', '\U0001F4BE')
-    return resposta
+        return (
+            '\U0001F916',
+            'O ROBO DIZ:',
+            f'Pasta para as faturas do mês: {
+                mes_data} foi criada com sucesso!',
+            '\U0001F4C5',
+            '\U0001F91D',
+            '\U0001F4BE',
+        )
 
 
 def create_folder_download():
     if os.path.isdir(config_download_folder()):
         print(Fore.RED, '\U0001F916', 'O ROBO DIZ:',
               'A pasta downloads já existe!', '\U0001F4C1')
-        resposta = ('\U0001F916', 'O ROBO DIZ:',
-                    f'A pasta downloads já existe!', '\U0001F4C1')
+        resposta = (
+            '\U0001F916',
+            'O ROBO DIZ:',
+            'A pasta downloads já existe!',
+            '\U0001F4C1',
+        )
     else:
         os.mkdir(config_download_folder())
         print(Fore.GREEN, '\U0001F916', 'O ROBO DIZ:',
               'A pasta downloads foi criada com sucesso!', '\U0001F4BE')
-        resposta = ('\U0001F916', 'O ROBO DIZ:',
-                    f'A pasta downloads foi criada com sucesso!', '\U0001F4BE')
-        return resposta
+        return (
+            '\U0001F916',
+            'O ROBO DIZ:',
+            'A pasta downloads foi criada com sucesso!',
+            '\U0001F4BE',
+        )
 
 
 def random_wait(inicio=5, fim=7):
@@ -116,19 +154,18 @@ def create_csv(header, data, filename):
 
 def rename_arquivo(local, download, rename, phone):
     if os.path.isfile(download):
-        print(Fore.WHITE, '\U0001F916',
-              f'O ROBO Verificou e achou o arquivo {download}')
-        os.rename(download, rename)
-        shutil.move(rename, local)
-        print(Fore.GREEN,
-              '\U0001F916', f'O ROBO renomeou e moveu a fatura da linha {phone} com sucesso')
+        extract_and_rename(download, rename, local, phone)
     else:
-        print('\U0001F916', f'O ROBO está aguardando o arquivo, vamos esperar')
+        print('\U0001F916', 'O ROBO está aguardando o arquivo, vamos esperar')
         random_wait(20, 30)
         if os.path.isfile(download):
-            print(Fore.WHITE, '\U0001F916',
-                  f'O ROBO Verificou e achou o arquivo {download}')
-            os.rename(download, rename)
-            shutil.move(rename, local)
-            print(Fore.GREEN,
-                  '\U0001F916', f'O ROBO renomeou e moveu a fatura da linha {phone} com sucesso')
+            extract_and_rename(download, rename, local, phone)
+
+
+def extract_and_rename(download, rename, local, phone):
+    print(Fore.WHITE, '\U0001F916',
+          f'O ROBO Verificou e achou o arquivo {download}')
+    os.rename(download, rename)
+    shutil.move(rename, local)
+    print(Fore.GREEN,
+          '\U0001F916', f'O ROBO renomeou e moveu a fatura da linha {phone} com sucesso')

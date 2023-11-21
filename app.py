@@ -21,7 +21,7 @@ def principal_window():
                        layout, size=window_size)
     while True:
         event, values = window.read()
-        if event == sg.WIN_CLOSED or event == 'Sair':
+        if event in [sg.WIN_CLOSED, 'Sair']:
             break
         if event == 'Automação Download Faturas VIVO':
             window.close()

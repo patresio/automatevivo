@@ -1,4 +1,4 @@
-selenium
+undetected-chromedriver
 webdriver-manager
 python-decouple
 colorama

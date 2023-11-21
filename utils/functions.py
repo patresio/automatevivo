@@ -40,7 +40,7 @@ def config_initial_data():
 
 
 def initial_drivers(browser):
-    if browser == 'firefox':
+    if browser == 'Firefox':
         options = FirefoxOptions()
         browser_arguments(options)
         options.set_preference(
@@ -66,11 +66,14 @@ def initial_drivers(browser):
             ]
         )
         return driver, wait
-    elif browser == 'chrome':
+    elif browser == 'Chrome':
         options = uc.ChromeOptions()
         browser_arguments(options)
-        driver = webdriver.Chrome(options=options, service=ChromeService(
-            ChromeDriverManager().install()))
+        prefs = {"download.default_directory": config_download_folder(),
+                 "safebrowsing.enabled": "false"}
+        options.add_experimental_option("prefs", prefs)
+        driver = uc.Chrome(options=options, service=ChromeService(
+            ChromeDriverManager().install()), use_subprocess=True)
         wait = WebDriverWait(
             driver,
             10,

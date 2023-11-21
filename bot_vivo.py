@@ -5,7 +5,8 @@ from selenium.webdriver.support import expected_conditions
 from utils.functions import *
 
 
-def bot_vivo():
+def bot_vivo(browser):
+    print(browser)
     print(Fore.BLUE, '\U0001F916',
           'OLÁ EU SOU O ROBÔ DO AUTOMATEVIVO VAMOS COMEÇAR EM INSTANTES', '\U000023F3')
     print('\U0001F5A5', 'Confira se o computador esta com a',
@@ -17,7 +18,7 @@ def bot_vivo():
     local_folder = config_initial_local_folder()
     site_map, site_link, user_data = config_initial_data()
 
-    driver, wait = initial_drivers()
+    driver, wait = initial_drivers(browser=browser)
     print(Fore.CYAN, '\U0001F916',
           'ROBO DIZ: Vou entrar no site e tentar fazer o login ....', '\U0001F412')
     driver.get(site_link)

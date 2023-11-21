@@ -12,7 +12,7 @@ def principal_window():
                  text_color='black', font='helvetica 12')],
         [sg.Text('Escolha a automação:', text_color='black', font='helvetica 10')],
         [sg.Text()],
-        [sg.Button('Automação Download Faturas VIVO')],
+        [sg.Button('Automação Download Faturas VIVO', key='automate_vivo'),],
         [sg.Text('')],
         [sg.Button('Sair', size=10)]
     ]
@@ -21,9 +21,9 @@ def principal_window():
                        layout, size=window_size)
     while True:
         event, values = window.read()
-        if event in [sg.WIN_CLOSED, 'Sair']:
+        if event == 'Sair' or event == sg.WIN_CLOSED:
             break
-        if event == 'Automação Download Faturas VIVO':
+        if event == 'automate_vivo':
             window.close()
             window_bot_vivo()
 
@@ -36,7 +36,7 @@ def window_bot_vivo():
         [sg.Text('\U0001F916 Bora começar!!!!!')],
         [sg.Text('\U0001F916 Sou melhor que qualquer estagiário!!!')],
         [sg.Text('')],
-        [sg.Button('Iniciar', key='botao_iniciar', size=(20, 1)),
+        [sg.Button('Iniciar', key='botao_iniciar', size=(20, 1)), sg.Combo(['Firefox', 'Chrome'], default_value='Firefox', readonly=True, key='navegador'),
          sg.Button('Voltar', key='botao_voltar', size=(20, 1))],
         [sg.Output(size=(400, 200))],
     ]
@@ -54,7 +54,8 @@ def window_bot_vivo():
             window.close()
             principal_window()
         elif event == 'botao_iniciar':
-            thread = Thread(target=bot_vivo, daemon=True)
+            browser = values['navegador']
+            thread = Thread(target=bot_vivo(browser), daemon=True)
             thread.start()
 
             window['botao_iniciar'].update(disabled=False)
